@@ -28,15 +28,29 @@
             box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
             transform: translateY(-5px);
         }
+        /* Input Glow */
+        .input-glow:focus {
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
+            border-color: #22d3ee;
+        }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-200 font-sans antialiased selection:bg-cyan-500 selection:text-white">
+
+    <!-- Notification Toast (Hidden by default) -->
+    <div id="notification" class="fixed top-24 right-5 bg-green-500 text-white px-6 py-4 rounded-lg shadow-2xl transform translate-x-full opacity-0 transition-all duration-500 z-[100] flex items-center gap-3 border border-green-400">
+        <i data-lucide="check-circle" class="w-6 h-6"></i>
+        <div>
+            <h4 class="font-bold">Success!</h4>
+            <p class="text-sm text-green-100">Message sent successfully.</p>
+        </div>
+    </div>
 
     <!-- Navigation Bar -->
     <nav class="fixed top-0 w-full bg-slate-900/90 backdrop-blur-md border-b border-slate-800 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
-                <div class="flex items-center">
+                <div class="flex items-center cursor-pointer" onclick="switchTab('home')">
                     <span class="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
                         DRAG
                     </span>
@@ -46,6 +60,8 @@
                         <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-cyan-400 bg-slate-800 transition-all">Home</button>
                         <button onclick="switchTab('resume')" id="nav-resume" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all">Resume</button>
                         <button onclick="switchTab('bio')" id="nav-bio" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all">Bio Data</button>
+                        <!-- ADDED CONTACT BUTTON -->
+                        <button onclick="switchTab('contact')" id="nav-contact" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all">Contact</button>
                     </div>
                 </div>
                 <!-- Mobile menu button placeholder -->
@@ -75,9 +91,9 @@
                         Full-Stack Developer | <span class="text-slate-200">Building Smart & Scalable Solutions</span>
                     </p>
                     <div class="flex justify-center md:justify-start space-x-4">
-                        <a href="#journey" class="px-6 py-3 bg-cyan-600 hover:bg-cyan-700 text-white font-medium rounded-lg transition-colors shadow-lg shadow-cyan-500/20">
-                            My Journey
-                        </a>
+                        <button onclick="switchTab('contact')" class="px-6 py-3 bg-cyan-600 hover:bg-cyan-700 text-white font-medium rounded-lg transition-colors shadow-lg shadow-cyan-500/20">
+                            Hire Me
+                        </button>
                         <a href="#certificates" class="px-6 py-3 border border-slate-600 hover:border-cyan-500 text-slate-300 hover:text-cyan-400 font-medium rounded-lg transition-colors">
                             Certificates
                         </a>
@@ -91,8 +107,9 @@
                         src="assets/images/profile1.png.jpg" 
                         class="w-full h-full object-cover shadow-lg"
                         style="object-position: 70% 20%;" 
+                        alt="Profile"
+                        onerror="this.src='https://ui-avatars.com/api/?name=Anirudh+Gudigar&background=0D9488&color=fff&size=512'"
                     >
-                        
                     </div>
                 </div>
             </div>
@@ -449,7 +466,7 @@
                                 </div>
                                 <div>
                                     <p class="text-sm text-slate-500">Email</p>
-                                    <p class="text-lg text-white font-medium">contact@anirudh.dev</p>
+                                    <p class="text-lg text-white font-medium">anirudhgudigar1@gmail.com</p>
                                 </div>
                             </div>
                         </div>
@@ -516,6 +533,117 @@
             </div>
         </div>
 
+        <!-- ================= NEW CONTACT TAB ================= -->
+        <div id="contact-section" class="tab-content hidden animate-fade-in">
+            <div class="max-w-7xl mx-auto px-4 mt-16 mb-20">
+                <!-- Header -->
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Get In Touch</h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-cyan-500 to-blue-600 mx-auto rounded-full"></div>
+                    <p class="text-slate-400 mt-4 max-w-xl mx-auto">Have a project in mind or want to collaborate? Feel free to reach out to me via email or social media.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    
+                    <!-- Left Side: Contact Info -->
+                    <div class="space-y-8 animate-fade-in delay-100">
+                        <div class="bg-slate-900/50 p-8 rounded-2xl border border-slate-800 hover:border-cyan-500/30 transition-all duration-300 h-full">
+                            <h3 class="text-2xl font-bold text-white mb-8">Contact Information</h3>
+                            
+                            <div class="space-y-8">
+                                <!-- Email -->
+                                <div class="flex items-start gap-4">
+                                    <div class="p-4 bg-slate-800 rounded-full text-cyan-400 shadow-lg shadow-cyan-500/10">
+                                        <i data-lucide="mail" class="w-6 h-6"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-white">Email</h4>
+                                        <a href="mailto:anirudhgudigar1@gmail.com" class="text-slate-400 hover:text-cyan-400 transition-colors">anirudhgudigar1@gmail.com</a>
+                                        <p class="text-xs text-slate-500 mt-1">Send me a mail anytime!</p>
+                                    </div>
+                                </div>
+
+                                <!-- Location -->
+                                <div class="flex items-start gap-4">
+                                    <div class="p-4 bg-slate-800 rounded-full text-purple-400 shadow-lg shadow-purple-500/10">
+                                        <i data-lucide="map-pin" class="w-6 h-6"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-white">Location</h4>
+                                        <p class="text-slate-400">Karnataka, India</p>
+                                        <p class="text-xs text-slate-500 mt-1">Open to remote opportunities.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Social Links -->
+                                <div class="pt-8 border-t border-slate-800">
+                                    <h4 class="text-lg font-semibold text-white mb-4">Connect with me</h4>
+                                    <div class="flex gap-4 flex-wrap">
+                                        <a href="#" class="p-3 bg-slate-800 rounded-lg text-slate-300 hover:text-white hover:bg-blue-600 transition-all transform hover:-translate-y-1">
+                                            <i data-lucide="linkedin" class="w-6 h-6"></i>
+                                        </a>
+                                        <a href="#" class="p-3 bg-slate-800 rounded-lg text-slate-300 hover:text-white hover:bg-gray-700 transition-all transform hover:-translate-y-1">
+                                            <i data-lucide="github" class="w-6 h-6"></i>
+                                        </a>
+                                        <a href="#" class="p-3 bg-slate-800 rounded-lg text-slate-300 hover:text-white hover:bg-sky-500 transition-all transform hover:-translate-y-1">
+                                            <i data-lucide="twitter" class="w-6 h-6"></i>
+                                        </a>
+                                        <!-- Added Facebook Icon -->
+                                        <a href="#" class="p-3 bg-slate-800 rounded-lg text-slate-300 hover:text-white hover:bg-blue-700 transition-all transform hover:-translate-y-1">
+                                            <i data-lucide="facebook" class="w-6 h-6"></i>
+                                        </a>
+                                        <!-- Added Instagram Icon -->
+                                        <a href="#" class="p-3 bg-slate-800 rounded-lg text-slate-300 hover:text-white hover:bg-pink-600 transition-all transform hover:-translate-y-1">
+                                            <i data-lucide="instagram" class="w-6 h-6"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Side: Contact Form -->
+                    <div class="animate-fade-in delay-200">
+                        <div class="bg-slate-900/50 p-8 rounded-2xl border border-slate-800 relative overflow-hidden">
+                            <!-- Background glow effect -->
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
+                            
+                            <h3 class="text-2xl font-bold text-white mb-6">Send a Message</h3>
+                            
+                            <form id="contactForm" onsubmit="handleContact(event)" class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-2">
+                                        <label class="text-sm font-medium text-slate-400">Name</label>
+                                        <input required type="text" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white outline-none transition-all input-glow placeholder-slate-600" placeholder="John Doe">
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="text-sm font-medium text-slate-400">Email</label>
+                                        <input required type="email" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white outline-none transition-all input-glow placeholder-slate-600" placeholder="john@example.com">
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2">
+                                    <label class="text-sm font-medium text-slate-400">Subject</label>
+                                    <input required type="text" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white outline-none transition-all input-glow placeholder-slate-600" placeholder="Project Collaboration">
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label class="text-sm font-medium text-slate-400">Message</label>
+                                    <textarea required rows="4" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white outline-none transition-all input-glow placeholder-slate-600 resize-none" placeholder="Write your message here..."></textarea>
+                                </div>
+
+                                <button type="submit" class="w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg font-bold text-white shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2 group">
+                                    <span>Send Message</span>
+                                    <i data-lucide="send" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <!-- Footer -->
@@ -537,7 +665,10 @@
             });
             
             // Show selected content
-            document.getElementById(tabName + '-section').classList.remove('hidden');
+            const selectedSection = document.getElementById(tabName + '-section');
+            if(selectedSection) {
+                selectedSection.classList.remove('hidden');
+            }
 
             // Update Nav Buttons
             document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -548,14 +679,39 @@
 
             // Highlight active button
             const activeBtn = document.getElementById('nav-' + tabName);
-            activeBtn.classList.remove('text-slate-300');
-            activeBtn.classList.add('text-cyan-400', 'bg-slate-800');
+            if(activeBtn) {
+                activeBtn.classList.remove('text-slate-300');
+                activeBtn.classList.add('text-cyan-400', 'bg-slate-800');
+            }
             
             // Re-trigger animations by cloning and replacing (optional, keeps it snappy)
-            const section = document.getElementById(tabName + '-section');
-            section.classList.remove('animate-fade-in');
-            void section.offsetWidth; // trigger reflow
-            section.classList.add('animate-fade-in');
+            if(selectedSection) {
+                selectedSection.classList.remove('animate-fade-in');
+                void selectedSection.offsetWidth; // trigger reflow
+                selectedSection.classList.add('animate-fade-in');
+            }
+            
+            // Re-initialize icons just in case
+            lucide.createIcons();
+        }
+
+        // Contact Form Handler
+        function handleContact(event) {
+            event.preventDefault(); // Prevent actual form submission
+            
+            // Show Notification
+            const notification = document.getElementById('notification');
+            
+            // Slide in
+            notification.classList.remove('translate-x-full', 'opacity-0');
+            
+            // Reset Form
+            document.getElementById('contactForm').reset();
+
+            // Hide after 3 seconds
+            setTimeout(() => {
+                notification.classList.add('translate-x-full', 'opacity-0');
+            }, 3000);
         }
     </script>
 </body>
