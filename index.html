@@ -7,6 +7,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons for nice UI elements -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script type="text/javascript">
+   (function(){
+      // REPLACE 'YOUR_PUBLIC_KEY' WITH THE KEY FROM STEP 1
+      emailjs.init("UPP5B5ZsK--v3vQq9");
+   })();
+</script>
     <style>
         /* Custom Animations */
         @keyframes fadeIn {
@@ -639,27 +646,27 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div class="space-y-2">
                                         <label class="text-sm font-medium text-slate-400">Name</label>
-                                        <input required type="text" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white outline-none transition-all input-glow placeholder-slate-600" placeholder="John Doe">
+                                        <input type="text" name="from_name" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white outline-none transition-all input-glow placeholder-slate-600" placeholder="John Doe">
                                     </div>
                                     <div class="space-y-2">
                                         <label class="text-sm font-medium text-slate-400">Email</label>
-                                        <input required type="email" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white outline-none transition-all input-glow placeholder-slate-600" placeholder="john@example.com">
+                                        <input type="email" name="from_email" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white outline-none transition-all input-glow placeholder-slate-600" placeholder="john@example.com">
                                     </div>
                                 </div>
                                 
                                 <div class="space-y-2">
                                     <label class="text-sm font-medium text-slate-400">Subject</label>
-                                    <input required type="text" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white outline-none transition-all input-glow placeholder-slate-600" placeholder="Project Collaboration">
+                                    <input type="text" name="subject" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white outline-none transition-all input-glow placeholder-slate-600" placeholder="Project Collaboration">
                                 </div>
-
+                            
                                 <div class="space-y-2">
                                     <label class="text-sm font-medium text-slate-400">Message</label>
-                                    <textarea required rows="4" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white outline-none transition-all input-glow placeholder-slate-600 resize-none" placeholder="Write your message here..."></textarea>
+                                    <textarea name="message" required rows="4" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white outline-none transition-all input-glow placeholder-slate-600 resize-none" placeholder="Write your message here..."></textarea>
                                 </div>
-
-                                <button type="submit" class="w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg font-bold text-white shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2 group">
-                                    <span>Send Message</span>
-                                    <i data-lucide="send" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                            
+                                <button type="submit" id="submitBtn" class="w-full py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg font-bold text-white shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2 group">
+                                    <span id="btnText">Send Message</span>
+                                    <i data-lucide="send" id="btnIcon" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                                 </button>
                             </form>
                         </div>
@@ -721,23 +728,52 @@
         }
 
         // Contact Form Handler
-        function handleContact(event) {
-            event.preventDefault(); // Prevent actual form submission
+        // Contact Form Handler with EmailJS
+function handleContact(event) {
+    event.preventDefault(); // Prevent page reload
+    
+    // Get button elements to change text while sending
+    const btn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const form = document.getElementById('contactForm');
+    
+    // 1. Change Button State to "Sending..."
+    const originalText = btnText.innerText;
+    btnText.innerText = 'Sending...';
+    btn.disabled = true;
+    btn.classList.add('opacity-70', 'cursor-not-allowed');
+
+    // 2. Send Email via EmailJS
+    // REPLACE 'YOUR_SERVICE_ID' and 'YOUR_TEMPLATE_ID' with actual IDs
+    emailjs.sendForm('service_ruytbxm', 'template_04zpnu9', form)
+        .then(function() {
+            // SUCCESS
+            console.log('SUCCESS!');
             
-            // Show Notification
+            // Show Notification Toast
             const notification = document.getElementById('notification');
-            
-            // Slide in
             notification.classList.remove('translate-x-full', 'opacity-0');
             
             // Reset Form
-            document.getElementById('contactForm').reset();
+            form.reset();
 
-            // Hide after 3 seconds
+            // Hide Toast after 3 seconds
             setTimeout(() => {
                 notification.classList.add('translate-x-full', 'opacity-0');
             }, 3000);
-        }
+
+        }, function(error) {
+            // ERROR
+            console.log('FAILED...', error);
+            alert("Failed to send message. Please try again later or email me directly.");
+        })
+        .finally(() => {
+            // 3. Reset Button State
+            btnText.innerText = originalText;
+            btn.disabled = false;
+            btn.classList.remove('opacity-70', 'cursor-not-allowed');
+        });
+}
     </script>
 </body>
 </html>
