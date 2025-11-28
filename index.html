@@ -62,25 +62,33 @@
                         DRAG
                     </span>
                 </div>
+                
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
                         <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-cyan-400 bg-slate-800 transition-all">Home</button>
                         <button onclick="switchTab('resume')" id="nav-resume" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all">Resume</button>
                         <button onclick="switchTab('bio')" id="nav-bio" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all">Bio Data</button>
-                        <!-- ADDED CONTACT BUTTON -->
                         <button onclick="switchTab('contact')" id="nav-contact" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all">Contact</button>
                     </div>
                 </div>
-                <!-- Mobile menu button placeholder -->
+    
                 <div class="-mr-2 flex md:hidden">
-                    <button class="bg-slate-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-slate-700 focus:outline-none">
+                    <button onclick="toggleMobileMenu()" class="bg-slate-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-slate-700 focus:outline-none transition-colors">
                         <i data-lucide="menu"></i>
                     </button>
                 </div>
             </div>
         </div>
+    
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-900 border-b border-slate-800">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col">
+                <button onclick="switchTab('home'); toggleMobileMenu()" class="mobile-nav-btn text-left block w-full px-3 py-2 rounded-md text-base font-medium text-cyan-400 bg-slate-800">Home</button>
+                <button onclick="switchTab('resume'); toggleMobileMenu()" class="mobile-nav-btn text-left block w-full px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-700">Resume</button>
+                <button onclick="switchTab('bio'); toggleMobileMenu()" class="mobile-nav-btn text-left block w-full px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-700">Bio Data</button>
+                <button onclick="switchTab('contact'); toggleMobileMenu()" class="mobile-nav-btn text-left block w-full px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-700">Contact</button>
+            </div>
+        </div>
     </nav>
-
     <!-- MAIN CONTENT AREA -->
     <main class="pt-20 pb-12">
 
@@ -685,6 +693,61 @@
     <script>
         // Initialize Icons
         lucide.createIcons();
+        // Toggle Mobile Menu Visibility
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    menu.classList.toggle('hidden');
+}
+
+// UPDATE your existing switchTab function to also update Mobile Buttons
+// Replace your existing switchTab function with this updated version:
+function switchTab(tabName) {
+    // 1. Hide all tab contents
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.add('hidden');
+    });
+    
+    // 2. Show selected content
+    const selectedSection = document.getElementById(tabName + '-section');
+    if(selectedSection) {
+        selectedSection.classList.remove('hidden');
+    }
+
+    // 3. Update DESKTOP Nav Buttons
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('text-cyan-400', 'bg-slate-800');
+        btn.classList.add('text-slate-300');
+    });
+    const activeBtn = document.getElementById('nav-' + tabName);
+    if(activeBtn) {
+        activeBtn.classList.remove('text-slate-300');
+        activeBtn.classList.add('text-cyan-400', 'bg-slate-800');
+    }
+
+    // 4. Update MOBILE Nav Buttons (New addition)
+    document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+        btn.classList.remove('text-cyan-400', 'bg-slate-800');
+        btn.classList.add('text-slate-300');
+    });
+    
+    // Find the mobile button by text content (simple way)
+    const mobileBtns = document.querySelectorAll('.mobile-nav-btn');
+    mobileBtns.forEach(btn => {
+        if(btn.innerText.toLowerCase().includes(tabName === 'bio' ? 'bio' : tabName)) {
+            btn.classList.remove('text-slate-300');
+            btn.classList.add('text-cyan-400', 'bg-slate-800');
+        }
+    });
+    
+    // 5. Re-trigger animations
+    if(selectedSection) {
+        selectedSection.classList.remove('animate-fade-in');
+        void selectedSection.offsetWidth; 
+        selectedSection.classList.add('animate-fade-in');
+    }
+    
+    lucide.createIcons();
+}
 
         // Simple Tab Switching Logic
         function switchTab(tabName) {
